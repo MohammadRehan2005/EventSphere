@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import API from "../utils/axios"
+import Navbar from "../components/Navbar"
 
 function EventDetailsPage() {
   let navigate = useNavigate()
-  let { id } = useParams()  // get event id from URL
+  let { id } = useParams()
   let [event, setEvent] = useState(null)
   let [loading, setLoading] = useState(true)
   let [error, setError] = useState("")
 
-  // fetch event details when page loads
   useEffect(() => {
     let fetchEvent = async () => {
       try {
@@ -29,72 +29,151 @@ function EventDetailsPage() {
   }, [id])
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#0F0F0F]">
+      <Navbar />
 
-      {/* Navbar */}
-      <nav className="bg-white shadow-md px-8 py-4 flex justify-between items-center">
-        <h1
-          onClick={() => navigate("/")}
-          className="text-2xl font-bold text-blue-600 cursor-pointer"
-        >
-          EventSphere
-        </h1>
+      {/* Back Button */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 border-b border-[#2A2A2A]">
         <button
           onClick={() => navigate("/")}
-          className="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50"
+          className="font-mono text-[#AAAAAA] text-xs tracking-widest hover:text-[#E88C3A] transition-colors cursor-pointer"
         >
-          ← Back to Events
+          ← back to events
         </button>
-      </nav>
+      </div>
 
       {/* Loading State */}
       {loading && (
-        <p className="text-center text-gray-500 mt-20">Loading event details...</p>
+        <p className="font-mono text-[#AAAAAA] text-sm text-center py-20">
+          loading event...
+        </p>
       )}
 
       {/* Error State */}
       {error && (
-        <p className="text-center text-red-500 mt-20">{error}</p>
+        <p className="font-mono text-[#FF4444] text-sm text-center py-20">
+          {error}
+        </p>
       )}
 
       {/* Event Details */}
       {!loading && event && (
-        <div className="max-w-2xl mx-auto px-4 py-10">
-          <div className="bg-white rounded-xl shadow-md p-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
 
-            {/* Event Title */}
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">{event.title}</h2>
+            {/* Left — Event Info */}
+            <div className="lg:col-span-2">
 
-            {/* Event Info */}
-            <div className="flex flex-col gap-3 mb-6">
-              <p className="text-gray-500">
-                📅 <span className="font-medium text-gray-700">
-                  {new Date(event.date).toDateString()}
-                </span>
+              {/* Label */}
+              <p className="font-mono text-[#AAAAAA] text-[10px] tracking-[4px] uppercase mb-4">
+                / event details
               </p>
-              <p className="text-gray-500">
-                📍 <span className="font-medium text-gray-700">{event.location}</span>
-              </p>
+
+              {/* Title */}
+              <h1 className="font-serif text-white text-4xl sm:text-5xl leading-tight tracking-tight mb-8">
+                {event.title}
+              </h1>
+
+              {/* Date and Location */}
+              <div className="flex flex-col sm:flex-row gap-6 mb-8 pb-8 border-b border-[#2A2A2A]">
+                <div>
+                  <p className="font-mono text-[#AAAAAA] text-[10px] tracking-[3px] uppercase mb-2">
+                    DATE
+                  </p>
+                  <p className="font-mono text-white text-sm">
+                    📅 {new Date(event.date).toDateString()}
+                  </p>
+                </div>
+                <div>
+                  <p className="font-mono text-[#AAAAAA] text-[10px] tracking-[3px] uppercase mb-2">
+                    LOCATION
+                  </p>
+                  <p className="font-mono text-white text-sm">
+                    📍 {event.location}
+                  </p>
+                </div>
+              </div>
+
+              {/* Description */}
+              <div>
+                <p className="font-mono text-[#AAAAAA] text-[10px] tracking-[3px] uppercase mb-4">
+                  ABOUT THIS EVENT
+                </p>
+                <p className="font-mono text-[#AAAAAA] text-sm leading-relaxed">
+                  {event.description}
+                </p>
+              </div>
+
             </div>
 
-            {/* Divider */}
-            <hr className="mb-6" />
+            {/* Right — Booking Card */}
+            <div className="lg:col-span-1">
+              <div className="bg-[#1A1A1A] border border-[#2A2A2A] p-6 sticky top-24">
 
-            {/* Description */}
-            <h3 className="text-lg font-bold text-gray-800 mb-2">About this Event</h3>
-            <p className="text-gray-600 leading-relaxed mb-8">{event.description}</p>
+                {/* Card Label */}
+                <p className="font-mono text-[#AAAAAA] text-[10px] tracking-[3px] uppercase mb-6">
+                  / book your spot
+                </p>
 
-            {/* Book Now Button */}
-            <button
-              onClick={() => alert("Payment coming soon!")}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition"
-            >
-              Book Now
-            </button>
+                {/* Event Title in Card */}
+                <h3 className="font-serif text-white text-xl leading-tight mb-6">
+                  {event.title}
+                </h3>
+
+                {/* Divider */}
+                <div className="border-t border-[#2A2A2A] mb-6"></div>
+
+                {/* Date */}
+                <div className="mb-4">
+                  <p className="font-mono text-[#AAAAAA] text-[10px] tracking-[3px] uppercase mb-1">
+                    DATE
+                  </p>
+                  <p className="font-mono text-white text-xs">
+                    {new Date(event.date).toDateString()}
+                  </p>
+                </div>
+
+                {/* Location */}
+                <div className="mb-8">
+                  <p className="font-mono text-[#AAAAAA] text-[10px] tracking-[3px] uppercase mb-1">
+                    LOCATION
+                  </p>
+                  <p className="font-mono text-white text-xs">
+                    {event.location}
+                  </p>
+                </div>
+
+                {/* Book Button */}
+                <button
+                  onClick={() => alert("Payment coming soon!")}
+                  className="w-full py-4 bg-[#E88C3A] text-[#0F0F0F] font-mono text-sm font-bold tracking-widest hover:bg-[#F09A4D] transition-colors cursor-pointer"
+                >
+                  book now →
+                </button>
+
+                {/* Note */}
+                <p className="font-mono text-[#AAAAAA] text-[10px] text-center mt-4 leading-relaxed">
+                  secure payment via razorpay.<br />qr ticket sent instantly.
+                </p>
+
+              </div>
+            </div>
 
           </div>
         </div>
       )}
+
+      {/* Footer */}
+      <footer className="border-t border-[#2A2A2A] mt-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center">
+          <p className="font-mono text-[#AAAAAA] text-[10px]">
+            eventsphere © 2026
+          </p>
+          <p className="font-mono text-[#AAAAAA] text-[10px]">
+            made for local communities
+          </p>
+        </div>
+      </footer>
 
     </div>
   )
