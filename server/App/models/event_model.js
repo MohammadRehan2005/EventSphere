@@ -7,7 +7,7 @@ const eventSchema = new mongoose.Schema({
         trim: true,
     },
     date: {
-        type: Date,                             // ✅ Date type instead of String
+        type: Date,
         required: [true, "Event date is required"],
     },
     location: {
@@ -19,11 +19,16 @@ const eventSchema = new mongoose.Schema({
         type: String,
         trim: true,
     },
+    ticketPrice: {
+        type: Number,
+        required: true,
+        default: 0
+    },
     createdBy: {
-        type: mongoose.Schema.Types.ObjectId,   // ✅ links event to a user
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
     }
-}, { timestamps: true });                       // ✅ adds createdAt and updatedAt
+}, { timestamps: true });
 
 module.exports = mongoose.model("Event", eventSchema);

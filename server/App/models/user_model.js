@@ -21,6 +21,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, "Phone number is required"],
     },
-}, { timestamps: true });   // adds createdAt and updatedAt
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user"
+    }
+}, { timestamps: true });
 
 module.exports = mongoose.model("User", userSchema);

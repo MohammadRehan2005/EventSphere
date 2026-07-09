@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import API from "../utils/axios"
 import Navbar from "../components/Navbar"
+import Toast from "../components/Toast"
+import { useToast } from "../utils/useToast"
 
 function EventDetailsPage() {
   let navigate = useNavigate()
@@ -9,6 +11,78 @@ function EventDetailsPage() {
   let [event, setEvent] = useState(null)
   let [loading, setLoading] = useState(true)
   let [error, setError] = useState("")
+  let { toast, showToast, hideToast } = useToast()
+
+let handleBookNow = async () => {
+    try {
+        // Step 1 — Create ticket
+        let joinRes = await API.post("/event/join-event", { eventId: id })
+
+        if (!joinRes.data.success) {
+            // alert(joinRes.data.message)
+            showToast(joinRes.data.message, "success")
+            return
+        }
+
+        let ticketId = joinRes.data.ticket._id
+
+        // Step 2 — Check if event is free
+        if (!event.ticketPrice || event.ticketPrice === 0) {
+            // alert("Event booked successfully! It's a free event.")
+            showToast("Event booked successfully! It's a free event.","success")
+            navigate("/my-tickets")
+            return
+        }
+
+        // Step 3 — Create Razorpay Order for paid events
+        let orderRes = await API.post("/payment/create-order", { ticketId })
+
+        if (!orderRes.data.success) {
+            alert("Could not create payment order")
+            return
+        }
+
+        let { order, key } = orderRes.data
+
+        // Step 4 — Open Razorpay Checkout
+        let options = {
+            key: key,
+            amount: order.amount,
+            currency: order.currency,
+            name: "EventSphere",
+            description: event.title,
+            order_id: order.id,
+            handler: async function (response) {
+                try {
+                    let verifyRes = await API.post("/payment/verify-payment", {
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_signature: response.razorpay_signature,
+                        ticketId: ticketId
+                    })
+
+                    if (verifyRes.data.success) {
+                        alert("Payment successful! Ticket booked.")
+                        navigate("/my-tickets")
+                    } else {
+                        alert("Payment verification failed")
+                    }
+                } catch (err) {
+                    alert("Something went wrong verifying payment")
+                }
+            },
+            theme: {
+                color: "#E88C3A"
+            }
+        }
+
+        let razorpayInstance = new window.Razorpay(options)
+        razorpayInstance.open()
+
+    } catch (err) {
+        alert("Something went wrong. Try again.")
+    }
+}
 
   useEffect(() => {
     let fetchEvent = async () => {
@@ -145,7 +219,7 @@ function EventDetailsPage() {
 
                 {/* Book Button */}
                 <button
-                  onClick={() => alert("Payment coming soon!")}
+                  onClick={handleBookNow}
                   className="w-full py-4 bg-[#E88C3A] text-[#0F0F0F] font-mono text-sm font-bold tracking-widest hover:bg-[#F09A4D] transition-colors cursor-pointer"
                 >
                   book now →

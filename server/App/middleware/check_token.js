@@ -1,11 +1,12 @@
-require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 let checkToken = (req, res, next) => {
-
     try {
         let token = req.headers['authorization'].split(' ')[1];
-        var decoded = jwt.verify(token, process.env.TOKENKEY); //{ _id: '6943df90f43a22b54f54f588', iat: 1766487562 }
+        var decoded = jwt.verify(token, process.env.TOKENKEY);
+        if (!req.body) {
+            req.body = {};
+        }
         req.body.userId = decoded._id;
         next();
     } catch (err) {

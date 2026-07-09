@@ -1,7 +1,7 @@
 // src/components/Navbar.jsx
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { isLoggedIn } from '../utils/auth';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { isLoggedIn } from "../utils/auth";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -11,15 +11,15 @@ const Navbar = () => {
     setLoggedIn(isLoggedIn());
     const handleAuth = () => setLoggedIn(isLoggedIn());
     // window.addEventListener('storage', handleStorage);
-    window.addEventListener('authChange', handleAuth);
+    window.addEventListener("authChange", handleAuth);
     // return () => window.removeEventListener('storage', handleStorage);
-    return () => window.removeEventListener('authChange', handleAuth);
+    return () => window.removeEventListener("authChange", handleAuth);
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     setLoggedIn(false);
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
@@ -27,7 +27,7 @@ const Navbar = () => {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="h-16 flex items-center justify-between">
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
             className="group flex items-baseline select-none"
           >
             <span className="font-serif text-white text-2xl sm:text-3xl leading-none">
@@ -42,13 +42,13 @@ const Navbar = () => {
             {!loggedIn ? (
               <>
                 <button
-                  onClick={() => navigate('/login')}
+                  onClick={() => navigate("/login")}
                   className="px-3 py-2 text-white hover:text-[#E88C3A] font-mono border border-transparent rounded-none focus:outline-none focus:ring-2 focus:ring-[#E88C3A] focus:ring-offset-2 focus:ring-offset-[#0F0F0F] transition-colors duration-200"
                 >
                   login
                 </button>
                 <button
-                  onClick={() => navigate('/register')}
+                  onClick={() => navigate("/register")}
                   className="px-3 py-2 bg-[#E88C3A] hover:bg-[#F09A4D] text-black font-mono border border-[#2A2A2A] rounded-none focus:outline-none focus:ring-2 focus:ring-[#E88C3A] focus:ring-offset-2 focus:ring-offset-[#0F0F0F] transition-colors duration-200"
                 >
                   register →
@@ -57,7 +57,13 @@ const Navbar = () => {
             ) : (
               <>
                 <button
-                  onClick={() => navigate('/my-tickets')}
+                  onClick={() => navigate("/create-event")}
+                  className="px-3 py-2 text-white hover:text-[#E88C3A] font-mono border border-transparent rounded-none focus:outline-none transition-colors duration-200"
+                >
+                  create event
+                </button>
+                <button
+                  onClick={() => navigate("/my-tickets")}
                   className="px-3 py-2 bg-[#E88C3A] hover:bg-[#F09A4D] text-black font-mono border border-[#2A2A2A] rounded-none focus:outline-none focus:ring-2 focus:ring-[#E88C3A] focus:ring-offset-2 focus:ring-offset-[#0F0F0F] transition-colors duration-200"
                 >
                   my tickets

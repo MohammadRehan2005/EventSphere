@@ -5,6 +5,8 @@ import RegisterPage from './pages/RegisterPage'
 import EventDetailsPage from './pages/EventDetailsPage'
 import MyTicketsPage from './pages/MyTicketsPage'
 import NotFoundPage from './pages/NotFoundPage'
+import AdminDashboard from './pages/AdminDashboard'
+import CreateEventPage from './pages/CreateEventPage'
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/event/:id" element={<EventDetailsPage />} />
         <Route path="/my-tickets" element={<MyTicketsPage />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/create-event" element={<CreateEventPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
