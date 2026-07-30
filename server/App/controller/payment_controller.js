@@ -11,7 +11,7 @@ let instance = new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-// Step 1 — Create Razorpay Order
+
 let createOrder = async (req, res) => {
     try {
         let { ticketId } = req.body;
@@ -23,17 +23,17 @@ let createOrder = async (req, res) => {
         }
 
         let event = await event_model.findOne({ _id: ticket.eventId });
-        let amount = event.ticketPrice || 100; // default 100 if not set
+        let amount = event.ticketPrice || 100; 
 
         let options = {
-            amount: amount * 100, // razorpay needs amount in paise
+            amount: amount * 100, 
             currency: "INR",
             receipt: `receipt_${ticketId}`,
         };
 
         let order = await instance.orders.create(options);
 
-        // save payment record as pending
+        
         let payment = new payment_model({
             ticketId,
             userId,
@@ -55,7 +55,7 @@ let createOrder = async (req, res) => {
     }
 }
 
-// Step 2 — Verify Payment after success
+
 let verifyPayment = async (req, res) => {
     try {
         let { razorpay_order_id, razorpay_payment_id, razorpay_signature, ticketId } = req.body;
@@ -70,7 +70,7 @@ let verifyPayment = async (req, res) => {
             return res.json({ success: false, message: "Payment verification failed" });
         }
 
-        // update payment record
+        
         await payment_model.updateOne(
             { razorpayOrderId: razorpay_order_id },
             {
@@ -82,7 +82,7 @@ let verifyPayment = async (req, res) => {
             }
         );
 
-        // generate QR code data — contains ticket info for verification
+       
         let qrData = JSON.stringify({
             ticketId: ticketId,
             paymentId: razorpay_payment_id
@@ -90,7 +90,7 @@ let verifyPayment = async (req, res) => {
 
         let qrCodeImage = await QRCode.toDataURL(qrData);
 
-        // update ticket status and save QR code
+        
         await ticket_model.updateOne(
             { _id: ticketId },
             { 

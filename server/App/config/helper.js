@@ -1,6 +1,6 @@
 require("dotenv").config();
-console.log("EMAIL:", process.env.EMAIL);  // should print your email
-console.log("PASS:", process.env.PASS);    // should print your app password
+console.log("EMAIL:", process.env.EMAIL); 
+console.log("PASS:", process.env.PASS);   
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({

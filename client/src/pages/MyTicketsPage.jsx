@@ -150,7 +150,6 @@ function MyTicketsPage() {
                 )}
 
                 {/* Download Button */}
-                {/* Download Button */}
                 <button
                   onClick={() =>
                     handleDownload(ticket.qrCode, ticket.eventId?.title)

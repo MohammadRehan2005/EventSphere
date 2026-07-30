@@ -18,7 +18,7 @@ let handleBookNow = async () => {
         let joinRes = await API.post("/event/join-event", { eventId: id })
 
         if (!joinRes.data.success) {
-            alert(joinRes.data.message)  // ← make sure this is alert not showToast
+            alert(joinRes.data.message) 
             return
         }
 

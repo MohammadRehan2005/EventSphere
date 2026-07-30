@@ -80,8 +80,8 @@ let sendOTP = async (req, res) => {
 };
 
 let createUser = async (req, res) => {
-    let { otp, userEmail } = req.body;       // get email from body too
-    let backendOTP = myMap.get(userEmail);   // look up OTP by that email
+    let { otp, userEmail } = req.body;      
+    let backendOTP = myMap.get(userEmail);   
     if (otp == backendOTP) {
         let { userName, userEmail, userPassword, userPhone } = req.body;
         const hash = bcrypt.hashSync(userPassword, saltRounds);
@@ -100,7 +100,7 @@ let createUser = async (req, res) => {
             message: "user Created",
             resObj,
         });
-        myMap.delete(userEmail);  // clean up after successful registration
+        myMap.delete(userEmail); 
     } else {
         res.json({
             success: false,
@@ -122,7 +122,7 @@ let login = async (req, res) => {
 
         if (bcrypt.compareSync(loginPassword, dbPassword)) {
 
-            let token = jwt.sign({ _id: userCheck._id }, process.env.TOKENKEY, { expiresIn: "1d" });  //token dies after 1 day
+            let token = jwt.sign({ _id: userCheck._id }, process.env.TOKENKEY, { expiresIn: "1d" });  
 
             res.json({
                 success: true,
