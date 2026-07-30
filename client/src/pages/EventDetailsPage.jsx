@@ -15,26 +15,21 @@ function EventDetailsPage() {
 
 let handleBookNow = async () => {
     try {
-        // Step 1 — Create ticket
         let joinRes = await API.post("/event/join-event", { eventId: id })
 
         if (!joinRes.data.success) {
-            // alert(joinRes.data.message)
-            showToast(joinRes.data.message, "success")
+            alert(joinRes.data.message)  // ← make sure this is alert not showToast
             return
         }
 
         let ticketId = joinRes.data.ticket._id
 
-        // Step 2 — Check if event is free
         if (!event.ticketPrice || event.ticketPrice === 0) {
-            // alert("Event booked successfully! It's a free event.")
-            showToast("Event booked successfully! It's a free event.","success")
+            alert("Event booked successfully! It's a free event.")
             navigate("/my-tickets")
             return
         }
 
-        // Step 3 — Create Razorpay Order for paid events
         let orderRes = await API.post("/payment/create-order", { ticketId })
 
         if (!orderRes.data.success) {
@@ -44,7 +39,6 @@ let handleBookNow = async () => {
 
         let { order, key } = orderRes.data
 
-        // Step 4 — Open Razorpay Checkout
         let options = {
             key: key,
             amount: order.amount,
@@ -80,6 +74,7 @@ let handleBookNow = async () => {
         razorpayInstance.open()
 
     } catch (err) {
+        console.log(err)
         alert("Something went wrong. Try again.")
     }
 }

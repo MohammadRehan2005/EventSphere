@@ -23,7 +23,8 @@ function MyTicketsPage() {
 
   let fetchTickets = async () => {
     try {
-      let res = await API.get("/event/my-tickets");
+      // let res = await API.get("/event/my-tickets");
+      let res = await API.post("/event/my-tickets", {})
       if (res.data.success) {
         setTickets(res.data.tickets || []);
       }
