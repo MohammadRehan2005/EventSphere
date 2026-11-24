@@ -378,43 +378,6 @@ Potential improvements include:
 
 ---
 
-## 📸 Screenshots
-
-Add screenshots of the application here.
-
-Recommended screenshots:
-
-* Home page
-* Event listing
-* Event details
-* Login/Register
-* Payment page
-* Digital ticket
-* QR scanner
-* Admin dashboard
-* Attendee management
-* Event analytics
-
-Example:
-
-```md
-## 📸 Screenshots
-
-### Home Page
-![Home Page](screenshots/home.png)
-
-### Event Details
-![Event Details](screenshots/event-details.png)
-
-### Digital Ticket
-![Digital Ticket](screenshots/ticket.png)
-
-### Admin Dashboard
-![Admin Dashboard](screenshots/admin-dashboard.png)
-```
-
----
-
 ## 👨‍💻 Author
 
 **Mohammad Rehan**
